@@ -21,6 +21,23 @@ public class Menu {
 		String titular;
 		float saldo, limite;
 
+		System.out.println("\nCriar Contas\n");
+
+		ContaCorrente cc1 = new ContaCorrente(contas.gerarNumero(), 123, 1, "João da Silva", 1000f, 100.0f);
+		contas.cadastrar(cc1);
+
+		ContaCorrente cc2 = new ContaCorrente(contas.gerarNumero(), 124, 1, "Maria da Silva", 2000f, 100.0f);
+
+		contas.cadastrar(cc2);
+
+		ContaPoupanca cp1 = new ContaPoupanca(contas.gerarNumero(), 125, 2, "Mariana dos Santos", 4000f, 12);
+		contas.cadastrar(cp1);
+
+		ContaPoupanca cp2 = new ContaPoupanca(contas.gerarNumero(), 125, 2, "Juliana Ramos", 8000f, 15);
+		contas.cadastrar(cp2);
+
+		contas.listarTodos();
+
 		while (true) {
 
 			System.out.println(Cores.TEXT_YELLOW + Cores.ANSI_BLACK_BACKGROUND
@@ -100,30 +117,102 @@ public class Menu {
 			case 3:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Consultar dados da Conta - por número\n\n");
 
+				System.out.println("Digite o número da conta: ");
+				numero = entrada.nextInt();
+
+				contas.procurarNumero(numero);
+
 				keyPress();
 				break;
 			case 4:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Atualizar dados da Conta\n\n");
+
+				System.out.println("Digite o número da conta: ");
+				numero = entrada.nextInt();
+
+				var buscarConta = contas.buscarNaCollection(numero);
+
+				if (buscarConta == null) {
+
+					tipo = buscarConta.getTipo();
+
+					System.out.println("Digite o Número da Agência: ");
+					agencia = entrada.nextInt();
+					System.out.println("Digite o Nome do Tirular: ");
+					entrada.skip("\\R?");
+					titular = entrada.nextLine();
+					System.out.println("Digite o Saldo da Conta (R$): ");
+					saldo = entrada.nextFloat();
+
+					switch (tipo) {
+					case 1 -> {
+						System.out.println("Digite o Limite de Crédito: ");
+						limite = entrada.nextFloat();
+						contas.cadastrar(
+								new ContaCorrente(contas.gerarNumero(), agencia, tipo, titular, saldo, limite));
+					}
+					case 2 -> {
+						System.out.println("Digite o dia do Aniversário da Conta: ");
+						aniversario = entrada.nextInt();
+						contas.cadastrar(
+								new ContaPoupanca(contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
+					}
+					default -> System.out.println("Tipo de conta inválido");
+					}
+				} else {
+					System.out.println("A conta não foi encontrada.");
+				}
 
 				keyPress();
 				break;
 			case 5:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Apagar a Conta\n\n");
 
+				System.out.println("Digite o número da conta: ");
+				numero = entrada.nextInt();
+
+				contas.deletar(numero);
+
 				keyPress();
 				break;
 			case 6:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Saque\n\n");
 
+				System.out.println("Digite o número da conta: ");
+				numero = entrada.nextInt();
+
+				System.out.println("Digite o valor para sacar: ");
+				float saque = entrada.nextFloat();
+
+				contas.sacar(numero, saque);
 				keyPress();
 				break;
 			case 7:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Depósito\n\n");
 
+				System.out.println("Digite o número da conta: ");
+				numero = entrada.nextInt();
+
+				System.out.println("Digite o valor para depositar: ");
+				float deposito = entrada.nextFloat();
+
+				contas.depositar(numero, deposito);
+
 				keyPress();
 				break;
 			case 8:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Transferência entre Contas\n\n");
+
+				System.out.println("Digite o número da conta de origem: ");
+				int numeroOrigem = entrada.nextInt();
+
+				System.out.println("Digite o número da conta de destino: ");
+				int numeroDestino = entrada.nextInt();
+
+				System.out.println("Digite o valor para transferir: ");
+				float valor = entrada.nextFloat();
+
+				contas.transferir(numeroOrigem, numeroDestino, valor);
 
 				keyPress();
 				break;
@@ -133,7 +222,6 @@ public class Menu {
 				break;
 			}
 		}
-
 	}
 
 	public static void sobre() {
@@ -146,7 +234,6 @@ public class Menu {
 
 	public static void keyPress() {
 		try {
-
 			System.out.println(Cores.TEXT_RESET + "\n\nPressione Enter para Continuar...");
 			System.in.read();
 
