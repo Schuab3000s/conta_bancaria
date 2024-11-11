@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import conta.controller.ContaController;
 import conta.model.ContaCorrente;
 import conta.model.ContaPoupanca;
 import conta.util.Cores;
@@ -12,24 +13,13 @@ public class Menu {
 
 	public static void main(String[] args) {
 
-		// Teste da Classe Conta Corrente
-		ContaCorrente cc1 = new ContaCorrente(2, 123, 1, "Mariana", 15000.0f, 1000.0f);
-		cc1.visualizar();
-		cc1.sacar(12000.0f);
-		cc1.visualizar();
-		cc1.depositar(5000.0f);
-		cc1.visualizar();
-		// Teste da Classe Conta Poupança
-		ContaPoupanca cp1 = new ContaPoupanca(3, 123, 2, "Victor", 100000.0f, 15);
-		cp1.visualizar();
-		cp1.sacar(12000.0f);
-		cp1.visualizar();
-		cp1.depositar(5000.0f);
-		cp1.visualizar();
+		ContaController contas = new ContaController();
 
 		Scanner entrada = new Scanner(System.in);
 
-		int opcao;
+		int opcao, numero, agencia, tipo, aniversario;
+		String titular;
+		float saldo, limite;
 
 		while (true) {
 
@@ -71,11 +61,40 @@ public class Menu {
 			case 1:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Criar Conta\n\n");
 
+				System.out.println("Digite o Número da Agência: ");
+				agencia = entrada.nextInt();
+				System.out.println("Digite o Nome do Tirular: ");
+				entrada.skip("\\R?");
+				titular = entrada.nextLine();
+
+				do {
+					System.out.println("Digite o Tipo de Conta: ");
+					System.out.println("1 - Conta Corrente \n2 - Conta Poupança");
+					tipo = entrada.nextInt();
+				} while (tipo != 1 && tipo != 2);
+
+				System.out.println("Digite o Saldo da Conta (R$): ");
+				saldo = entrada.nextFloat();
+
+				switch (tipo) {
+				case 1 -> {
+					System.out.println("Digite o Limite de Crédito: ");
+					limite = entrada.nextFloat();
+					contas.cadastrar(new ContaCorrente(contas.gerarNumero(), agencia, tipo, titular, saldo, limite));
+				}
+				case 2 -> {
+					System.out.println("Digite o dia do Aniversário da Conta: ");
+					aniversario = entrada.nextInt();
+					contas.cadastrar(
+							new ContaPoupanca(contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
+				}
+				}
+
 				keyPress();
 				break;
 			case 2:
 				System.out.println(Cores.TEXT_WHITE_BOLD + "Listar todas as Contas\n\n");
-
+				contas.listarTodos();
 				keyPress();
 				break;
 			case 3:
@@ -126,16 +145,13 @@ public class Menu {
 	}
 
 	public static void keyPress() {
-
 		try {
 
 			System.out.println(Cores.TEXT_RESET + "\n\nPressione Enter para Continuar...");
 			System.in.read();
 
 		} catch (IOException e) {
-
 			System.out.println("Você pressionou uma tecla diferente de enter!");
 		}
 	}
-
 }
