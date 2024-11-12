@@ -19,7 +19,6 @@ public class ContaController implements ContaRepository {
 		} else {
 			System.out.println("\nA Conta número: " + numero + " não foi encontrada!");
 		}
-
 	}
 
 	@Override
@@ -27,14 +26,12 @@ public class ContaController implements ContaRepository {
 		for (var conta : listaContas) {
 			conta.visualizar();
 		}
-
 	}
 
 	@Override
 	public void cadastrar(Conta conta) {
 		listaContas.add(conta);
 		System.out.println("\nA Conta número: " + conta.getNumero() + " foi criada com sucesso!");
-
 	}
 
 	@Override
@@ -60,7 +57,6 @@ public class ContaController implements ContaRepository {
 		} else {
 			System.out.println("\nA Conta número: " + conta.getNumero() + " não foi encontrada!");
 		}
-
 	}
 
 	@Override
@@ -68,13 +64,13 @@ public class ContaController implements ContaRepository {
 		var conta = buscarNaCollection(numero);
 
 		if (conta != null) {
-
-			conta.sacar(valor);
+			if (conta.sacar(valor) == true) {
+				System.out.println("\nO Saque na Conta número: " + numero + " foi efetuado com sucesso!");
+			}
 
 		} else {
 			System.out.println("\nA Conta número: " + numero + " não foi encontrada!");
 		}
-
 	}
 
 	@Override
@@ -84,11 +80,10 @@ public class ContaController implements ContaRepository {
 		if (conta != null) {
 
 			conta.depositar(valor);
-
+			System.out.println("\nO Depósito na Conta número: " + numero + " foi efetuado com sucesso!");
 		} else {
 			System.out.println("\nA Conta número: " + numero + " não foi encontrada!");
 		}
-
 	}
 
 	@Override
@@ -96,17 +91,14 @@ public class ContaController implements ContaRepository {
 		var contaOrigem = buscarNaCollection(numeroOrigem);
 		var contaDestino = buscarNaCollection(numeroDestino);
 
-		if (contaOrigem == null) {
-			System.out.println("\nA Conta número: " + numeroOrigem + " não foi encontrada!");
-		} else if (contaDestino == null) {
-			System.out.println("\nA Conta número: " + numeroDestino + " não foi encontrada!");
-		} else if (valor <= contaOrigem.getSaldo()) {
-			contaOrigem.sacar(valor);
-			contaDestino.depositar(valor);
-		}else{
-			System.out.println("Saldo Insuficiente!");
+		if (contaOrigem == null && contaDestino == null) {
+			if(contaOrigem.sacar(valor)==true) {
+				contaDestino.depositar(valor);
+				System.out.println("\nA Trandferência foi efetuada com sucesso!");
+			}
+		} else {
+			System.out.println("\nA Conta de Origem e/ou Destino não foram encontrada!");
 		}
-
 	}
 
 	public int gerarNumero() {
