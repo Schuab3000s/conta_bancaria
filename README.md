@@ -50,6 +50,12 @@ O sistema de conta bancária implementa as seguintes funcionalidades:
 ### Criar Conta
 O menu solicitará que o usuário insira o tipo de conta (corrente ou poupança) e os dados do titular.
 
+### Listar Contas
+Escolha a opção de listar contas, para listar todas as contas existentes.
+
+### Atualizar Contas
+Escolha a opção de ataulizar, o menu solicitará que o usuário insira o número da conta a ser atualizada e o tipo de conta (corrente ou poupança) e os dados do titular.
+
 ### Realizar Depósito
 Escolha a opção de depósito, insira o número da conta e o valor a ser depositado.
 
