@@ -21,23 +21,6 @@ public class Menu {
 		String titular;
 		float saldo, limite, valor;
 
-		System.out.println("\nCriar Contas\n");
-
-		ContaCorrente cc1 = new ContaCorrente(contas.gerarNumero(), 123, 1, "João da Silva", 1000f, 100.0f);
-		contas.cadastrar(cc1);
-
-		ContaCorrente cc2 = new ContaCorrente(contas.gerarNumero(), 124, 1, "Maria da Silva", 2000f, 100.0f);
-
-		contas.cadastrar(cc2);
-
-		ContaPoupanca cp1 = new ContaPoupanca(contas.gerarNumero(), 125, 2, "Mariana dos Santos", 4000f, 12);
-		contas.cadastrar(cp1);
-
-		ContaPoupanca cp2 = new ContaPoupanca(contas.gerarNumero(), 125, 2, "Juliana Ramos", 8000f, 15);
-		contas.cadastrar(cp2);
-
-		contas.listarTodos();
-
 		while (true) {
 
 			System.out.println(Cores.TEXT_YELLOW + Cores.ANSI_BLACK_BACKGROUND
@@ -132,7 +115,7 @@ public class Menu {
 
 				var buscarConta = contas.buscarNaCollection(numero);
 
-				if (buscarConta == null) {
+				if (buscarConta != null) {
 
 					tipo = buscarConta.getTipo();
 
@@ -199,7 +182,7 @@ public class Menu {
 					System.out.println("Digite o valor para depositar (R$): ");
 					valor = entrada.nextFloat();
 				} while (valor <= 0);
-				
+
 				contas.depositar(numero, valor);
 
 				keyPress();
@@ -213,10 +196,10 @@ public class Menu {
 				System.out.println("Digite o número da conta de destino: ");
 				numeroDestino = entrada.nextInt();
 
-				do{
+				do {
 					System.out.println("Digite o valor para transferir: ");
 					valor = entrada.nextFloat();
-				}while(valor<=0);		
+				} while (valor <= 0);
 
 				contas.transferir(numeroOrigem, numeroDestino, valor);
 
