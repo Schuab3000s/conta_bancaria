@@ -59,5 +59,3 @@ Escolha a opção de saque, insira o número da conta e o valor do saque. O sist
 ### Transferência entre Contas
 Escolha a opção de transferência, insira o número da conta de origem, o número da conta de destino e o valor a ser transferido.
 
-### Consultar Saldo
-Insira o número da conta para ver o saldo atual.
